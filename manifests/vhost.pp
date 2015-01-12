@@ -47,37 +47,15 @@ define nginx::vhost (
     default => $groupowner,
   }
 
-  $bool_create_docroot = any2bool($create_docroot)
+  $bool_create_docroot = str2bool($create_docroot)
 
-  file { "${nginx::vdir}/${priority}-${name}.conf":
+  file { "${nginx::path}/${name}.conf":
     content => template($template),
     mode    => $nginx::config_file_mode,
     owner   => $nginx::config_file_owner,
     group   => $nginx::config_file_group,
     require => Package['nginx'],
     notify  => Service['nginx'],
-  }
-
-  # Some OS specific settings:
-  # On Debian/Ubuntu manages sites-enabled
-  case $::operatingsystem {
-    ubuntu,debian,mint: {
-      $manage_file = $enable ? {
-        true  => "${nginx::vdir}/${priority}-${name}.conf",
-        false => absent,
-      }
-
-      file { "NginxVHostEnabled_${name}":
-        ensure  => $manage_file,
-        path    => "${nginx::vdir_enable}/${priority}-${name}.conf",
-        require => Package['nginx'],
-        notify  => Service['nginx'],
-      }
-    }
-    redhat,centos,scientific,fedora: {
-      # include nginx::redhat
-    }
-    default: { }
   }
 
   if $bool_create_docroot == true {
@@ -88,5 +66,4 @@ define nginx::vhost (
       mode   => '0775',
     }
   }
-
 }

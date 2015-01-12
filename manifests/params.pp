@@ -14,16 +14,6 @@
 #
 class nginx::params {
 
-  $gzip = 'on'
-  $worker_connections = 1024
-  $multi_accept = 'on'
-  $keepalive_timeout = 65
-  $client_max_body_size = '10m'
-  $server_names_hash_max_size = 512
-  $server_names_hash_bucket_size = 64
-  $types_hash_max_size = 1024
-  $sendfile = 'on'
-
   ### Application related parameters
 
   $package = $::operatingsystem ? {
@@ -43,15 +33,6 @@ class nginx::params {
   }
 
   $process = $::operatingsystem ? {
-    default => 'nginx',
-  }
-
-  $process_args = $::operatingsystem ? {
-    default => '',
-  }
-
-  $process_user = $::operatingsystem ? {
-    /(?i:Debian|Ubuntu|Mint)/ => 'www-data',
     default => 'nginx',
   }
 
@@ -100,30 +81,11 @@ class nginx::params {
   $protocol = 'tcp'
 
   # General Settings
-  $my_class = ''
-  $source = ''
-  $source_dir = ''
-  $source_dir_purge = false
   $config_file_default_purge = false
   $template = ''
   $options = ''
   $service_autorestart = true
   $version = 'present'
   $absent = false
-  $disable = false
-  $disableboot = false
-
-  ### General module variables that can have a site or per module default
-  $monitor = false
-  $monitor_tool = ''
-  $monitor_target = $::ipaddress
-  $firewall = false
-  $firewall_tool = ''
-  $firewall_src = '0.0.0.0/0'
-  $firewall_dst = $::ipaddress
-  $puppi = false
-  $puppi_helper = 'standard'
-  $debug = false
-  $audit_only = false
 
 }
