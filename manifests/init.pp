@@ -148,7 +148,7 @@ class nginx (
 
   Exec['apt_update'] -> Package['nginx']
   apt::source { 'nginx':
-    location   => "http://nginx.org/packages/${distro}",
+    location   => "http://nginx.org/packages/mainline/${distro}",
     repos      => 'nginx',
     key        => '7BD9BF62',
     key_source => 'http://nginx.org/keys/nginx_signing.key',
